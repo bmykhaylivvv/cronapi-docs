@@ -1,0 +1,46 @@
+---
+title: "Authentication"
+description: "Generate and use API keys to authenticate your requests"
+keywords: ["authentication", "API key", "bearer token", "authorization"]
+---
+
+All API requests require a Bearer token in the `Authorization` header.
+
+## Getting your API key
+
+1. Log into the [CronAPI dashboard](https://cronapi.dev/dashboard)
+2. Navigate to the **API Key** page in the sidebar
+3. Your API key is generated automatically on first visit
+4. Copy the key immediately — the full plaintext key is only shown once
+
+<Warning>
+  Store your API key securely. It cannot be retrieved after the initial display — only the prefix is stored for identification.
+</Warning>
+
+## Using your API key
+
+Include the key in the `Authorization` header of every API request:
+
+```bash
+curl https://cronapi.dev/api/v1/crons \
+  -H "Authorization: Bearer APIKEY"
+```
+
+## Regenerating your key
+
+You can regenerate your API key from the dashboard at any time. This immediately invalidates the previous key — any requests using the old key will return `401 Unauthorized`.
+
+## Error responses
+
+If authentication fails, the API returns:
+
+```json 401
+{
+  "error": "Missing or invalid Authorization header"
+}
+```
+
+Common causes:
+- Missing `Authorization` header
+- Missing `Bearer` prefix
+- Invalid or revoked API key

@@ -1,0 +1,106 @@
+{
+  "$schema": "https://mintlify.com/docs.json",
+  "theme": "linden",
+  "name": "cronapi",
+  "colors": {
+    "primary": "#16A34A",
+    "light": "#07C983",
+    "dark": "#15803D"
+  },
+  "navigation": {
+    "tabs": [
+      {
+        "tab": "Guides",
+        "groups": [
+          {
+            "group": "Getting started",
+            "pages": [
+              "index",
+              "quickstart",
+              "authentication"
+            ]
+          },
+          {
+            "group": "Core concepts",
+            "pages": [
+              "concepts/crons",
+              "concepts/jobs",
+              "concepts/runs"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "API reference",
+        "groups": [
+          {
+            "group": "Overview",
+            "pages": [
+              "api-reference/introduction"
+            ]
+          },
+          {
+            "group": "Crons",
+            "pages": [
+              "api-reference/crons/list",
+              "api-reference/crons/create",
+              "api-reference/crons/get",
+              "api-reference/crons/update",
+              "api-reference/crons/delete",
+              "api-reference/crons/trigger",
+              "api-reference/crons/runs"
+            ]
+          },
+          {
+            "group": "Jobs",
+            "pages": [
+              "api-reference/jobs/list",
+              "api-reference/jobs/create",
+              "api-reference/jobs/get",
+              "api-reference/jobs/update",
+              "api-reference/jobs/delete",
+              "api-reference/jobs/trigger",
+              "api-reference/jobs/runs"
+            ]
+          }
+        ]
+      }
+    ],
+    "global": {
+      "anchors": [
+        {
+          "anchor": "API reference",
+          "href": "/api-reference/introduction",
+          "icon": "code"
+        }
+      ]
+    }
+  },
+  "navbar": {
+    "primary": {
+      "type": "button",
+      "label": "Dashboard",
+      "href": "https://cronapi.dev/dashboard"
+    }
+  },
+  "contextual": {
+    "options": [
+      "copy",
+      "view",
+      "chatgpt",
+      "claude",
+      "perplexity"
+    ]
+  },
+  "footer": {
+    "socials": {
+      "x": "https://x.com/cronapi"
+    }
+  },
+  "api": {
+    "baseUrl": "https://cronapi.dev/api/v1",
+    "auth": {
+      "method": "bearer"
+    }
+  }
+}

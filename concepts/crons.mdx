@@ -1,0 +1,79 @@
+---
+title: "Crons"
+description: "Schedule recurring webhook calls using cron expressions"
+icon: "clock"
+keywords: ["cron", "cron expression", "recurring", "schedule", "webhook", "pause", "resume"]
+---
+
+A **cron** is a recurring scheduled webhook. You define a cron expression (e.g., `*/5 * * * *` for every 5 minutes) and CronAPI fires an HTTP request to your URL on that schedule.
+
+## Cron object
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `id` | string | Unique identifier (UUID) |
+| `name` | string \| null | Optional display name |
+| `cron` | string | Cron expression defining the schedule |
+| `url` | string | Webhook URL to call |
+| `method` | string | HTTP method: `GET`, `POST`, or `DELETE` |
+| `headers` | object | Custom HTTP headers sent with the request |
+| `body` | object | JSON body sent with POST requests |
+| `paused` | boolean | Whether execution is paused |
+| `next_run_at` | string | ISO 8601 timestamp of the next scheduled run |
+| `last_run_at` | string \| null | ISO 8601 timestamp of the most recent execution |
+| `created_at` | string | ISO 8601 timestamp of creation |
+
+## Cron expressions
+
+CronAPI uses standard 5-field cron syntax:
+
+```
+┌───────────── minute (0-59)
+│ ┌───────────── hour (0-23)
+│ │ ┌───────────── day of month (1-31)
+│ │ │ ┌───────────── month (1-12)
+│ │ │ │ ┌───────────── day of week (0-7, 0 and 7 = Sunday)
+│ │ │ │ │
+* * * * *
+```
+
+**Examples:**
+
+| Expression | Schedule |
+|------------|----------|
+| `* * * * *` | Every minute |
+| `*/5 * * * *` | Every 5 minutes |
+| `0 * * * *` | Every hour |
+| `0 9 * * *` | Daily at 9:00 AM UTC |
+| `0 9 * * 1` | Every Monday at 9:00 AM UTC |
+| `0 0 1 * *` | First day of every month at midnight |
+
+Cron expressions are validated on creation and update. Invalid expressions return a `400` error.
+
+## Pausing and resuming
+
+You can pause a cron to temporarily stop execution without deleting it. Update the `paused` field to `true`:
+
+```bash
+curl -X PATCH https://cronapi.dev/api/v1/crons/:id \
+  -H "Authorization: Bearer your_api_key_here" \
+  -H "Content-Type: application/json" \
+  -d '{"paused": true}'
+```
+
+Set `paused` to `false` to resume. The `next_run_at` is recalculated automatically when you update the cron expression.
+
+## Webhook execution
+
+When a cron fires, CronAPI sends an HTTP request with:
+
+- The configured **method** (GET, POST, or DELETE)
+- Your custom **headers** merged with `Content-Type: application/json`
+- The **body** serialized as JSON (for POST requests)
+- A **30-second timeout** — requests that exceed this are terminated
+
+Each execution is logged as a [run](/concepts/runs) with the status code, response time, and any error details.
+
+## Manual trigger
+
+You can fire a cron immediately using the [trigger endpoint](/api-reference/crons/trigger) without affecting the regular schedule.

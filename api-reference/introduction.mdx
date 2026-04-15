@@ -1,0 +1,61 @@
+---
+title: "API reference"
+description: "Complete reference for the CronAPI REST API"
+keywords: ["API reference", "REST API", "endpoints", "base URL", "status codes"]
+---
+
+## Base URL
+
+All API endpoints use the following base URL:
+
+```
+https://cronapi.dev/api/v1
+```
+
+## Authentication
+
+Every request must include a Bearer token in the `Authorization` header:
+
+```bash
+Authorization: Bearer your_api_key_here
+```
+
+See [Authentication](/authentication) for details on obtaining and managing API keys.
+
+## Request format
+
+- Request bodies must be JSON with `Content-Type: application/json`
+- All timestamps use ISO 8601 format (e.g., `2026-04-15T14:30:00.000Z`)
+- IDs are UUIDs
+
+## Response format
+
+Successful responses return the requested resource as JSON. Error responses use this format:
+
+```json
+{
+  "error": "Description of what went wrong"
+}
+```
+
+## Status codes
+
+| Code | Meaning |
+|------|---------|
+| `200` | Success |
+| `201` | Resource created |
+| `400` | Invalid request (bad cron expression, missing fields, etc.) |
+| `401` | Missing or invalid API key |
+| `404` | Resource not found or not owned by you |
+| `500` | Server error |
+
+## Resources
+
+<CardGroup cols={2}>
+  <Card title="Crons" icon="clock" href="/api-reference/crons/list">
+    Manage recurring scheduled webhooks.
+  </Card>
+  <Card title="Jobs" icon="calendar-check" href="/api-reference/jobs/list">
+    Manage one-time delayed webhooks.
+  </Card>
+</CardGroup>

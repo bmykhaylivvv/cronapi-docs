@@ -1,0 +1,75 @@
+---
+title: "Trigger cron"
+api: "POST /crons/{id}/trigger"
+description: "Fire a cron's webhook immediately"
+keywords: ["trigger cron", "fire webhook", "manual trigger"]
+---
+
+Manually triggers the cron's webhook without waiting for the next scheduled run. This does not affect the cron's schedule — `next_run_at` remains unchanged.
+
+## Path parameters
+
+<ResponseField name="id" type="string" required>
+  The UUID of the cron to trigger.
+</ResponseField>
+
+## Response
+
+Returns the execution result. The webhook is fired regardless of whether the cron is paused.
+
+<ResponseField name="status_code" type="integer">
+  HTTP status code returned by the webhook endpoint.
+</ResponseField>
+
+<ResponseField name="success" type="boolean">
+  `true` if the webhook returned a 2xx status code.
+</ResponseField>
+
+<ResponseField name="response_time_ms" type="integer">
+  Execution time in milliseconds.
+</ResponseField>
+
+<ResponseField name="fired_at" type="string">
+  ISO 8601 timestamp of when the webhook was fired.
+</ResponseField>
+
+<CodeGroup>
+```bash cURL
+curl -X POST https://cronapi.dev/api/v1/crons/a1b2c3d4-e5f6-7890-abcd-ef1234567890/trigger \
+  -H "Authorization: Bearer your_api_key_here"
+```
+
+```javascript Node.js
+const response = await fetch(
+  `https://cronapi.dev/api/v1/crons/${cronId}/trigger`,
+  {
+    method: "POST",
+    headers: { "Authorization": `Bearer your_api_key_here` },
+  }
+);
+const result = await response.json();
+```
+
+```python Python
+import requests
+
+response = requests.post(
+    f"https://cronapi.dev/api/v1/crons/{cron_id}/trigger",
+    headers={"Authorization": "Bearer your_api_key_here"},
+)
+result = response.json()
+```
+</CodeGroup>
+
+```json 200
+{
+  "status_code": 200,
+  "success": true,
+  "response_time_ms": 145,
+  "fired_at": "2026-04-15T14:31:30.123Z"
+}
+```
+
+<Note>
+  The execution is logged as a [run](/concepts/runs) and the cron's `last_run_at` is updated.
+</Note>

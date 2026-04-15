@@ -1,0 +1,62 @@
+---
+title: "Get job"
+api: "GET /jobs/{id}"
+description: "Retrieve a single job by ID"
+keywords: ["get job", "fetch job", "job details"]
+---
+
+## Path parameters
+
+<ResponseField name="id" type="string" required>
+  The UUID of the job to retrieve.
+</ResponseField>
+
+## Response
+
+Returns the job object if it exists and belongs to the authenticated user.
+
+<CodeGroup>
+```bash cURL
+curl https://cronapi.dev/api/v1/jobs/b2c3d4e5-f6a7-8901-bcde-f12345678901 \
+  -H "Authorization: Bearer your_api_key_here"
+```
+
+```javascript Node.js
+const response = await fetch(
+  `https://cronapi.dev/api/v1/jobs/${jobId}`,
+  { headers: { "Authorization": `Bearer your_api_key_here` } }
+);
+const job = await response.json();
+```
+
+```python Python
+import requests
+
+response = requests.get(
+    f"https://cronapi.dev/api/v1/jobs/{job_id}",
+    headers={"Authorization": "Bearer your_api_key_here"},
+)
+job = response.json()
+```
+</CodeGroup>
+
+```json 200
+{
+  "id": "b2c3d4e5-f6a7-8901-bcde-f12345678901",
+  "user_id": "d4e5f6a7-b890-1234-cdef-567890abcdef",
+  "name": "Send welcome email",
+  "at": "2026-04-20T15:00:00.000Z",
+  "url": "https://example.com/send-email",
+  "method": "POST",
+  "headers": {},
+  "body": {"user_id": "usr_123"},
+  "status": "pending",
+  "created_at": "2026-04-15T10:00:00.000Z"
+}
+```
+
+```json 404
+{
+  "error": "Job not found"
+}
+```

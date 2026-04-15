@@ -1,0 +1,57 @@
+---
+title: "Runs"
+description: "Track the execution history of your crons and jobs"
+icon: "list-check"
+keywords: ["runs", "execution history", "webhook logs", "status code", "response time", "errors"]
+---
+
+A **run** is a record of a single webhook execution. Every time a cron fires on schedule, a job reaches its scheduled time, or you manually trigger either one, CronAPI logs a run with the result.
+
+## Run object
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `id` | string | Unique identifier (UUID) |
+| `cron_id` | string \| null | Associated cron ID (null for job runs) |
+| `job_id` | string \| null | Associated job ID (null for cron runs) |
+| `request_id` | string \| null | Request identifier |
+| `status_code` | integer | HTTP status code returned by the webhook |
+| `success` | boolean | `true` if the status code is 2xx |
+| `response_time_ms` | integer | Time taken in milliseconds |
+| `error` | string \| null | Error message or response body on failure |
+| `fired_at` | string | ISO 8601 timestamp of when the webhook was fired |
+
+## Viewing runs
+
+Retrieve the last 50 runs for a specific cron or job:
+
+<CodeGroup>
+```bash Cron runs
+curl https://cronapi.dev/api/v1/crons/:id/runs \
+  -H "Authorization: Bearer your_api_key_here"
+```
+
+```bash Job runs
+curl https://cronapi.dev/api/v1/jobs/:id/runs \
+  -H "Authorization: Bearer your_api_key_here"
+```
+</CodeGroup>
+
+Runs are returned in reverse chronological order (most recent first).
+
+## Success and failure
+
+| Outcome | `success` | `error` |
+|---------|-----------|---------|
+| 2xx response | `true` | `null` |
+| 4xx/5xx response | `false` | Response body |
+| Request timeout | `false` | `"Request timed out"` |
+| Network error | `false` | Exception message |
+
+## Timeout
+
+All webhook requests have a **30-second timeout**. If your endpoint does not respond within 30 seconds, the run is recorded as failed with the error `"Request timed out"`.
+
+## Automatic cleanup
+
+Runs associated with a cron are automatically deleted when the cron is deleted.

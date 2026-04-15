@@ -1,0 +1,65 @@
+---
+title: "Jobs"
+description: "Schedule one-time delayed webhook calls"
+icon: "calendar-check"
+keywords: ["jobs", "one-time", "delayed webhook", "scheduled task", "pending", "completed", "failed"]
+---
+
+A **job** is a one-time scheduled webhook. You specify a future timestamp and CronAPI fires the HTTP request at that time. Unlike [crons](/concepts/crons), jobs execute once and are marked as completed or failed.
+
+## Job object
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `id` | string | Unique identifier (UUID) |
+| `name` | string \| null | Optional display name |
+| `at` | string | ISO 8601 timestamp for when to fire |
+| `url` | string | Webhook URL to call |
+| `method` | string | HTTP method: `GET`, `POST`, or `DELETE` |
+| `headers` | object | Custom HTTP headers sent with the request |
+| `body` | object | JSON body sent with POST requests |
+| `status` | string | Current status: `pending`, `completed`, or `failed` |
+| `created_at` | string | ISO 8601 timestamp of creation |
+
+## Job lifecycle
+
+```
+pending → completed (if webhook returns 2xx)
+pending → failed    (if webhook returns non-2xx or times out)
+```
+
+- **pending** — Waiting for the scheduled time
+- **completed** — Webhook fired successfully (2xx status code)
+- **failed** — Webhook returned an error or timed out
+
+<Note>
+  You can only update or delete a job while its status is `pending`. Completed and failed jobs are immutable.
+</Note>
+
+## Scheduling
+
+The `at` field must be a valid ISO 8601 datetime string set in the future:
+
+```json
+{
+  "at": "2026-04-20T15:00:00.000Z",
+  "url": "https://example.com/webhook",
+  "method": "POST",
+  "body": {"report_id": "abc123"}
+}
+```
+
+If you provide a past timestamp, the API returns a `400` error.
+
+## Webhook execution
+
+When a job fires, the behavior is identical to crons:
+
+- Configured **method**, **headers**, and **body** are sent
+- **30-second timeout** applies
+- Execution is logged as a [run](/concepts/runs)
+- Job status is updated to `completed` or `failed` based on the response
+
+## Manual trigger
+
+You can fire a pending job immediately using the [trigger endpoint](/api-reference/jobs/trigger). This executes the webhook right away and updates the job status accordingly.

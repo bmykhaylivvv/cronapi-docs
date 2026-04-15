@@ -1,0 +1,106 @@
+---
+title: "Get cron runs"
+api: "GET /crons/{id}/runs"
+description: "Retrieve execution history for a cron"
+keywords: ["cron runs", "execution history", "cron logs"]
+---
+
+Returns the last 50 executions for a cron, ordered by most recent first.
+
+## Path parameters
+
+<ResponseField name="id" type="string" required>
+  The UUID of the cron.
+</ResponseField>
+
+## Response
+
+Returns an array of [run](/concepts/runs) objects.
+
+<ResponseField name="id" type="string">
+  Unique run identifier (UUID).
+</ResponseField>
+
+<ResponseField name="cron_id" type="string">
+  The cron this run belongs to.
+</ResponseField>
+
+<ResponseField name="job_id" type="string | null">
+  Always `null` for cron runs.
+</ResponseField>
+
+<ResponseField name="request_id" type="string | null">
+  Request identifier.
+</ResponseField>
+
+<ResponseField name="status_code" type="integer">
+  HTTP status code returned by the webhook.
+</ResponseField>
+
+<ResponseField name="success" type="boolean">
+  `true` if the status code was 2xx.
+</ResponseField>
+
+<ResponseField name="response_time_ms" type="integer">
+  Execution time in milliseconds.
+</ResponseField>
+
+<ResponseField name="error" type="string | null">
+  Error message or response body on failure. `null` on success.
+</ResponseField>
+
+<ResponseField name="fired_at" type="string">
+  ISO 8601 timestamp of when the webhook was fired.
+</ResponseField>
+
+<CodeGroup>
+```bash cURL
+curl https://cronapi.dev/api/v1/crons/a1b2c3d4-e5f6-7890-abcd-ef1234567890/runs \
+  -H "Authorization: Bearer your_api_key_here"
+```
+
+```javascript Node.js
+const response = await fetch(
+  `https://cronapi.dev/api/v1/crons/${cronId}/runs`,
+  { headers: { "Authorization": `Bearer your_api_key_here` } }
+);
+const runs = await response.json();
+```
+
+```python Python
+import requests
+
+response = requests.get(
+    f"https://cronapi.dev/api/v1/crons/{cron_id}/runs",
+    headers={"Authorization": "Bearer your_api_key_here"},
+)
+runs = response.json()
+```
+</CodeGroup>
+
+```json 200
+[
+  {
+    "id": "f1e2d3c4-b5a6-7890-fedc-ba0987654321",
+    "cron_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+    "job_id": null,
+    "request_id": null,
+    "status_code": 200,
+    "success": true,
+    "response_time_ms": 145,
+    "error": null,
+    "fired_at": "2026-04-15T14:30:00.000Z"
+  },
+  {
+    "id": "e2d3c4b5-a697-8901-edcb-a09876543210",
+    "cron_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+    "job_id": null,
+    "request_id": null,
+    "status_code": 500,
+    "success": false,
+    "response_time_ms": 2300,
+    "error": "Internal Server Error",
+    "fired_at": "2026-04-15T14:25:00.000Z"
+  }
+]
+```
