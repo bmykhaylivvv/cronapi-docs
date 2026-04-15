@@ -80,7 +80,7 @@
     "primary": {
       "type": "button",
       "label": "Dashboard",
-      "href": "https://cronapi.dev/dashboard"
+      "href": "https://app.cronapi.dev"
     }
   },
   "contextual": {
