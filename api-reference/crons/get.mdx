@@ -17,13 +17,13 @@ Returns the cron object if it exists and belongs to the authenticated user.
 
 <CodeGroup>
 ```bash cURL
-curl https://cronapi.dev/api/v1/crons/a1b2c3d4-e5f6-7890-abcd-ef1234567890 \
+curl https://app.cronapi.dev/api/v1/crons/a1b2c3d4-e5f6-7890-abcd-ef1234567890 \
   -H "Authorization: Bearer your_api_key_here"
 ```
 
 ```javascript Node.js
 const response = await fetch(
-  `https://cronapi.dev/api/v1/crons/${cronId}`,
+  `https://app.cronapi.dev/api/v1/crons/${cronId}`,
   { headers: { "Authorization": `Bearer your_api_key_here` } }
 );
 const cron = await response.json();
@@ -33,7 +33,7 @@ const cron = await response.json();
 import requests
 
 response = requests.get(
-    f"https://cronapi.dev/api/v1/crons/{cron_id}",
+    f"https://app.cronapi.dev/api/v1/crons/{cron_id}",
     headers={"Authorization": "Bearer your_api_key_here"},
 )
 cron = response.json()

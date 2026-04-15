@@ -17,13 +17,13 @@ Returns a success confirmation. All associated [runs](/concepts/runs) are automa
 
 <CodeGroup>
 ```bash cURL
-curl -X DELETE https://cronapi.dev/api/v1/crons/a1b2c3d4-e5f6-7890-abcd-ef1234567890 \
+curl -X DELETE https://app.cronapi.dev/api/v1/crons/a1b2c3d4-e5f6-7890-abcd-ef1234567890 \
   -H "Authorization: Bearer your_api_key_here"
 ```
 
 ```javascript Node.js
 const response = await fetch(
-  `https://cronapi.dev/api/v1/crons/${cronId}`,
+  `https://app.cronapi.dev/api/v1/crons/${cronId}`,
   {
     method: "DELETE",
     headers: { "Authorization": `Bearer your_api_key_here` },
@@ -36,7 +36,7 @@ const result = await response.json();
 import requests
 
 response = requests.delete(
-    f"https://cronapi.dev/api/v1/crons/{cron_id}",
+    f"https://app.cronapi.dev/api/v1/crons/{cron_id}",
     headers={"Authorization": "Bearer your_api_key_here"},
 )
 result = response.json()

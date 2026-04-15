@@ -37,7 +37,7 @@ Returns the created cron object with a `201` status code.
 
 <CodeGroup>
 ```bash cURL
-curl -X POST https://cronapi.dev/api/v1/crons \
+curl -X POST https://app.cronapi.dev/api/v1/crons \
   -H "Authorization: Bearer your_api_key_here" \
   -H "Content-Type: application/json" \
   -d '{
@@ -51,7 +51,7 @@ curl -X POST https://cronapi.dev/api/v1/crons \
 ```
 
 ```javascript Node.js
-const response = await fetch("https://cronapi.dev/api/v1/crons", {
+const response = await fetch("https://app.cronapi.dev/api/v1/crons", {
   method: "POST",
   headers: {
     "Authorization": `Bearer your_api_key_here`,
@@ -73,7 +73,7 @@ const cron = await response.json();
 import requests
 
 response = requests.post(
-    "https://cronapi.dev/api/v1/crons",
+    "https://app.cronapi.dev/api/v1/crons",
     headers={"Authorization": "Bearer your_api_key_here"},
     json={
         "name": "Daily report",

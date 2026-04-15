@@ -61,12 +61,12 @@ Returns an array of job objects.
 
 <CodeGroup>
 ```bash cURL
-curl https://cronapi.dev/api/v1/jobs \
+curl https://app.cronapi.dev/api/v1/jobs \
   -H "Authorization: Bearer your_api_key_here"
 ```
 
 ```javascript Node.js
-const response = await fetch("https://cronapi.dev/api/v1/jobs", {
+const response = await fetch("https://app.cronapi.dev/api/v1/jobs", {
   headers: { "Authorization": `Bearer your_api_key_here` },
 });
 const jobs = await response.json();
@@ -76,7 +76,7 @@ const jobs = await response.json();
 import requests
 
 response = requests.get(
-    "https://cronapi.dev/api/v1/jobs",
+    "https://app.cronapi.dev/api/v1/jobs",
     headers={"Authorization": "Bearer your_api_key_here"},
 )
 jobs = response.json()

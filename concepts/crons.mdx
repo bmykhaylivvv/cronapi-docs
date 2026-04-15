@@ -55,7 +55,7 @@ Cron expressions are validated on creation and update. Invalid expressions retur
 You can pause a cron to temporarily stop execution without deleting it. Update the `paused` field to `true`:
 
 ```bash
-curl -X PATCH https://cronapi.dev/api/v1/crons/:id \
+curl -X PATCH https://app.cronapi.dev/api/v1/crons/:id \
   -H "Authorization: Bearer your_api_key_here" \
   -H "Content-Type: application/json" \
   -d '{"paused": true}'
